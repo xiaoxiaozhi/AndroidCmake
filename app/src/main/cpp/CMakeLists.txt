@@ -3,11 +3,21 @@
 
 # Sets the minimum version of CMake required to build the native library.
 
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.10.2)#cmake 变量识别大小写
+project(my_cmake)#project标签必须卸载前面，后面路径才会打印
 
-# Declares and names the project.
-
-project("myapplication")
+message(LLL,${PROJECT_BINARY_DIR})#编译产生文件 保存地址 C:/Users/zhixun/AndroidStudioProjects/MyApplication/app/.cxx/cmake/debug/armeabi-v7a
+message(BIAN,${PROJECT_SOURCE_DIR})#c代码所处的位置 C:/Users/zhixun/AndroidStudioProjects/MyApplication/app/src/main/cpp
+include_directories(${PROJECT_SOURCE_DIR}/include) #加载这个目录下面所有 头文件，包含子目录， 这样在cpp中引用头文件可以不用写具体路径
+MESSAGE(${PROJECT_BINARY_DIR}/src/main/cpp) #打印信息
+add_executable(app native-lib.cpp include/test.cpp)# 添加源文件，生成可执行文件 app （本例缺乏main ，在native-lib.cpp中添加即可）
+message(libLS23.a路径 ${PROJECT_SOURCE_DIR}/lib/libLS23.a)
+#引用代码库-------------------------------------------------------------
+add_library(staticFiled STATIC IMPORTED)# 1.首先定义个变量 staticFiled 经验类型 static 作用是 导入
+include_directories(${PROJECT_SOURCE_DIR}/include)#2.导入库相匹配的头文件
+set_property(TARGET staticFiled PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/lib/libLS23.a)# 3. 为变量指定库指定库
+target_link_libraries(app staticFiled)# 4. 添加链接
+#---------------------------------------------------------------------------
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -15,13 +25,12 @@ project("myapplication")
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-             native-lib
+        native-lib
 
-             # Sets the library as a shared library.
-             SHARED
-
-             # Provides a relative path to your source file(s).
-             native-lib.cpp )
+        # Sets the library as a shared library.
+        SHARED
+        # Provides a relative path to your source file(s).
+        native-lib.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -30,19 +39,19 @@ add_library( # Sets the name of the library.
 # completing its build.
 
 find_library( # Sets the name of the path variable.
-              log-lib
+        log-lib
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
+        # Specifies the name of the NDK library that
+        # you want CMake to locate.
+        log)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
-                       native-lib
+        native-lib
 
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib} )
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib})
