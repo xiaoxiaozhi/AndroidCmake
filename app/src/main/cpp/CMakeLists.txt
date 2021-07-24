@@ -12,13 +12,13 @@ message(cmake,${CMAKE_SOURCE_DIR})
 include_directories(include) #加载这个目录下面所有 头文件，包含子目录， 这样在cpp中引用头文件可以不用写具体路径
 
 #add_library(app native-lib.cpp test.cpp)# 添加源文件，生成可执行文件 app （本例缺乏main ，在native-lib.cpp中添加即可）
-add_library(app STATIC include/test.cpp)# 生成可执行文件, 默认静态
+add_library(mymymyapp STATIC include/test.cpp)# 生成可执行文件, 默认静态
 #message(libLS23.a路径 ${PROJECT_SOURE_DIR}/lib/libLS23.a)
 #引用代码库-------------------------------------------------------------
 add_library(staticFiled SHARED IMPORTED)# 1.首先定义个变量 staticFiled 经验类型 static 作用是 导入
 include_directories(include)#2.导入库相匹配的头文件
 #set_property(TARGET staticFiled PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/lib/app1)# 3. 为变量指定库指定库
-set_target_properties(staticFiled PROPERTIES IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/lib/libapp.so)
+#set_target_properties(staticFiled PROPERTIES IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/lib/libapp.so)
 #target_link_libraries(staticFiled)# 4. 添加链接,在下面一起添加，否则会被覆盖
 #---------------------------------------------------------------------------
 
@@ -54,7 +54,8 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
         native-lib
-        staticFiled
+#        staticFiled
+        mymymyapp
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
